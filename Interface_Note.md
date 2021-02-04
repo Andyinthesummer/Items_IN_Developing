@@ -17,8 +17,11 @@
 ## 2. 主要通信接口设计
 ### 2.1 状态信息
 #### 2.1.1 底盘状态信息
+
 **Topic Name** : `/scout_status`
+
 **Msg Type** : `scout_msgs/ScoutStatus`
+
 **Msg Content** :  `时间戳` `线速度` `角速度` `系统状态` `控制模式(遥控/自动控制)`  `底盘错误代码` `电量` `电流` `指示灯状态` `软/硬急停`
 ```python
 std_msgs/Header header        ## 时间戳
@@ -67,8 +70,11 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 
 #### 2.1.2 全局路径信息
 **Topic Name** : `/lane_waypoints_array`
+
 **Msg Type** : `autoware_msgs/LaneArray`
+
 **Msg Content** :   `路径点`
+
 ```python
 int32 id
 Lane[] lanes
@@ -86,7 +92,9 @@ Lane[] lanes
 
 #### 2.1.3 运动状态信息
 **Topic Name** : `/lane_waypoints_array`
+
 **Msg Type** : `Pcar_msg/move_status`
+
 **Msg Content** :   `运动状态`
 ```
 std_msgs/Header header
@@ -105,8 +113,11 @@ string data
 
 #### 2.1.4 巡检车当前位置
 **Topic Name** : `/curent_pose`
+
 **Msg Type** : `geometry_msgs/PoseStamped`
+
 **Msg Content** :   `位置信息`
+
 ```
 std_msgs/Header header
   uint32 seq
@@ -128,7 +139,9 @@ geometry_msgs/Pose pose
 ### 2.2 控制指令
 #### 2.2.1 指定目标点指令
 **Topic Name** : `/target_goal`
+
 **Msg Type** : `geometry_msgs/PoseStamped`
+
 **Msg Content** :  
 ```
 std_msgs/Header header
@@ -149,7 +162,9 @@ geometry_msgs/Pose pose
 
 #### 2.2.2 取消目标指令
 **Topic Name** : `/cancel_goal`
+
 **Msg Type** : `geometry_msgs/PoseStamped`
+
 **Msg Content** :  
 
 #### 2.2.3 相机云台控制
@@ -159,6 +174,7 @@ geometry_msgs/Pose pose
 ```
 uint8 data
 ```
+
 |值 | 含义 |
 ---|---|---
 | 0x01 | 相机云台右转单位弧度 |
@@ -169,9 +185,12 @@ uint8 data
 | 0xa2 | 相机云台回到初始位置 |
 | 0xff   | 相机云台停止运动 |
 
+
 #### 2.2.4 软急停控制指令
 **Topic Name** : `/emergency_state`
+
 **Msg Type** : `std_msgs/Bool`
+
 **Msg Content** :   `急停`
 ```
 uint8 data
