@@ -2,14 +2,20 @@
 ****
 ## 1. 接口设计说明
 &emsp;&emsp;巡检车端的软件系统目前分为三层，具体分为 **功能实现层**、**中间通信层**、**任务调度层**。其中功能实现层包含高精度地图构建、3D点云融合定位、路径规划、点云聚类识别、避障、运动规划、控制执行等模块，是巡检车智能化运动控制的底层实现。任务调度层用于实现用户交互，包括定制化巡检车的任务执行方式、显示巡检的各种状态信息等。中间通信层则主要是对功能实现层的接口进行包装，并按照服务机器人协议同任务调度层通信，同时实现包括建立数据库对巡检车配置信息进行存储、地图上传等功能。
+
 #### 1.1 适用范围
 &emsp;&emsp;该接口适用于巡检车 ***功能实现层*** 与 ***通信中间层*** 之间的通信连接。
+
 #### 1.2 通信方式
 &emsp;&emsp;采用**ROS**(一种基于消息传递通信的分布式多进程通信框架)的Topic通信机制，通过建立Node节点进行数据传输。
+
 #### 1.3 平台依赖
 &emsp;&emsp;**硬件平台** :  Jetson AGX Xavier 
+
 &emsp;&emsp;**操作系统** :  Ubuntu 18.04
-&emsp;&emsp;**环境依赖** :  ROS(Melodic) Autoware-msgs Scout-msgs
+
+&emsp;&emsp;**环境依赖** :  ROS(Melodic) / Autoware-msgs / Scout-msgs
+
 #### 1.4 接口类别
 &emsp;&emsp;主要包括**两类**接口:   底盘(包括传感器)运行**状态**信息和底盘(包括传感器)运动**控制**信息。
 
@@ -68,7 +74,19 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 | 硬急停 | base_state == 0x02 |
 | 软急停 | control_mode  == 0x00 |
 
-#### 2.1.2 全局路径信息
+#### 2.1.2 全局路径规划状态信息
+**Topic Name** : `/global_path_state`
+
+**Msg Type** : `std_msgs/Bool`
+
+**Msg Content** :   `全局路径规划状态`
+
+```
+uint8 data
+```
+
+
+#### 2.1.3 全局路径点信息
 **Topic Name** : `/lane_waypoints_array`
 
 **Msg Type** : `autoware_msgs/LaneArray`
@@ -90,7 +108,8 @@ Lane[] lanes
   bool is_blocked
 ```
 
-#### 2.1.3 运动状态信息
+#### 2.1.4 运动状态信息
+
 **Topic Name** : `/lane_waypoints_array`
 
 **Msg Type** : `Pcar_msg/move_status`
@@ -111,7 +130,7 @@ string data
 | Failed | 无法到达目标点 |
 | Canceled | 目标取消 |
 
-#### 2.1.4 巡检车当前位置
+#### 2.1.5 巡检车当前位置
 **Topic Name** : `/curent_pose`
 
 **Msg Type** : `geometry_msgs/PoseStamped`
@@ -134,7 +153,6 @@ geometry_msgs/Pose pose
     float64 z
     float64 w
 ```
-
 
 ### 2.2 控制指令
 #### 2.2.1 指定目标点指令
@@ -169,8 +187,10 @@ geometry_msgs/Pose pose
 
 #### 2.2.3 相机云台控制
 **Topic Name** : `/camera/cam_movectr`
+
 **Msg Type** : `std_msgs/UInt8`
-**Msg Content** :   
+
+**Msg Content** :   `运动指令`    
 ```
 uint8 data
 ```
