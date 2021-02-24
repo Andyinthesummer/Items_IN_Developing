@@ -110,25 +110,36 @@ Lane[] lanes
 
 #### 2.1.4 运动状态信息
 
-**Topic Name** : `/lane_waypoints_array`
+**Topic Name** : `/current_behavior`
 
-**Msg Type** : `Pcar_msg/move_status`
+**Msg Type** : `geometry_msgs/TwistStamped`
 
-**Msg Content** :   `运动状态`
-```
+**Msg Content** :   `运动状态等信息`
+
+```shell
 std_msgs/Header header
   uint32 seq
   time stamp
   string frame_id
-string data
+geometry_msgs/Twist twist
+  geometry_msgs/Vector3 linear
+    float64 x  ## 重新规划
+    float64 y  ## 跟踪距离
+    float64 z  ## 跟踪速度
+  geometry_msgs/Vector3 angular
+    float64 x  ## 路径点标识号
+    float64 y  ## 当前状态(STATE_TYPE)
+    float64 z  ## 路线标识号
 ```
-| 字段值 | 含义 |
----|---|---
-| Idle | 空闲/未收到任何移动指令 |
-| Running | 移动中 |
-| Succeeded | 到达目标点 |
-| Failed | 无法到达目标点 |
-| Canceled | 目标取消 |
+
+其中，当前状态`STATE_TYPE`取值如下，任务完成时取值`FINISH_STATE(13)`
+
+```C++
+enum STATE_TYPE {INITIAL_STATE, WAITING_STATE, FORWARD_STATE, STOPPING_STATE, EMERGENCY_STATE,
+                  TRAFFIC_LIGHT_STOP_STATE,TRAFFIC_LIGHT_WAIT_STATE, STOP_SIGN_STOP_STATE, 
+                  STOP_SIGN_WAIT_STATE, FOLLOW_STATE, LANE_CHANGE_STATE, OBSTACLE_AVOIDANCE_STATE, 
+                  GOAL_STATE, FINISH_STATE, YIELDING_STATE, BRANCH_LEFT_STATE, BRANCH_RIGHT_STATE};
+```
 
 #### 2.1.5 巡检车当前位置
 **Topic Name** : `/curent_pose`
@@ -178,7 +189,7 @@ geometry_msgs/Pose pose
     float64 w
 ```
 
-#### 2.2.2 取消目标指令
+#### 2.2.2 取消目标指令 
 **Topic Name** : `/cancel_goal`
 
 **Msg Type** : `geometry_msgs/PoseStamped`
