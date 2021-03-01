@@ -142,6 +142,7 @@ enum STATE_TYPE {INITIAL_STATE, WAITING_STATE, FORWARD_STATE, STOPPING_STATE, EM
 ```
 
 #### 2.1.5 巡检车当前位置
+
 **Topic Name** : `/curent_pose`
 
 **Msg Type** : `geometry_msgs/PoseStamped`
@@ -163,6 +164,22 @@ geometry_msgs/Pose pose
     float64 y
     float64 z
     float64 w
+```
+
+#### 2.1.6 巡检车当前GPS坐标
+
+**Topic Name** : `/nmea_sentence`
+
+**Msg Type** : `nmea_msgs/Sentence`
+
+**Msg Content** :   `GPS坐标` `GGA`
+
+```
+std_msgs/Header header
+  uint32 seq
+  time stamp
+  string frame_id
+string sentence
 ```
 
 ### 2.2 控制指令
