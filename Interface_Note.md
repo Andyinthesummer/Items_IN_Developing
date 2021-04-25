@@ -74,7 +74,45 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 | 硬急停 | base_state == 0x02 |
 | 软急停 | control_mode  == 0x00 |
 
-#### 2.1.2 全局路径规划状态信息
+#### 2.1.2 定位状态信息
+
+**Topic Name** : `/ndt_reliability`
+
+**Msg Type** : `std_msgs/Float32`
+
+**Msg Content** :   `定位可信度`
+```
+float32 data
+```
+**Note 1**: 当`data`值小于`10`时，认为定位成功 
+
+#### 2.1.3 巡检车当前位置
+
+**Topic Name** : `/curent_pose`
+
+**Msg Type** : `geometry_msgs/PoseStamped`
+
+**Msg Content** :   `位置信息`
+
+```
+std_msgs/Header header
+  uint32 seq
+  time stamp
+  string frame_id
+geometry_msgs/Pose pose
+  geometry_msgs/Point position
+    float64 x
+    float64 y
+    float64 z
+  geometry_msgs/Quaternion orientation
+    float64 x
+    float64 y
+    float64 z
+    float64 w
+```
+
+#### 2.1.4 全局路径规划状态信息
+
 **Topic Name** : `/global_path_state`
 
 **Msg Type** : `std_msgs/Bool`
@@ -85,8 +123,8 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 uint8 data
 ```
 
+#### 2.1.5 全局路径点信息
 
-#### 2.1.3 全局路径点信息
 **Topic Name** : `/lane_waypoints_array`
 
 **Msg Type** : `autoware_msgs/LaneArray`
@@ -108,7 +146,7 @@ Lane[] lanes
   bool is_blocked
 ```
 
-#### 2.1.4 运动状态信息
+#### 2.1.6 运动状态信息
 
 **Topic Name** : `/current_behavior`
 
@@ -134,6 +172,15 @@ geometry_msgs/Twist twist
 
 其中，当前状态`STATE_TYPE`取值如下，任务完成时取值`FINISH_STATE(13)`
 
+状态|含义
+---|---
+INITIAL_STATE(0) | 初始状态
+FORWARD_STATE(2) | 移动状态
+FOLLOW_STATE(9) | 遇到障碍物，等待状态
+OBSTACLE_AVOIDANCE_STATE(11) | 移动状态(避障)
+GOAL_STATE(12) | 移动状态(目标点切换)
+FINISH_STATE(13) | 到达目标点
+
 ```C++
 enum STATE_TYPE {INITIAL_STATE, WAITING_STATE, FORWARD_STATE, STOPPING_STATE, EMERGENCY_STATE,
                   TRAFFIC_LIGHT_STOP_STATE,TRAFFIC_LIGHT_WAIT_STATE, STOP_SIGN_STOP_STATE, 
@@ -141,32 +188,7 @@ enum STATE_TYPE {INITIAL_STATE, WAITING_STATE, FORWARD_STATE, STOPPING_STATE, EM
                   GOAL_STATE, FINISH_STATE, YIELDING_STATE, BRANCH_LEFT_STATE, BRANCH_RIGHT_STATE};
 ```
 
-#### 2.1.5 巡检车当前位置
-
-**Topic Name** : `/curent_pose`
-
-**Msg Type** : `geometry_msgs/PoseStamped`
-
-**Msg Content** :   `位置信息`
-
-```
-std_msgs/Header header
-  uint32 seq
-  time stamp
-  string frame_id
-geometry_msgs/Pose pose
-  geometry_msgs/Point position
-    float64 x
-    float64 y
-    float64 z
-  geometry_msgs/Quaternion orientation
-    float64 x
-    float64 y
-    float64 z
-    float64 w
-```
-
-#### 2.1.6 巡检车当前GPS坐标
+#### 2.1.7 巡检车当前GPS坐标
 
 **Topic Name** : `/nmea_sentence`
 
@@ -184,6 +206,9 @@ string sentence
 
 ### 2.2 控制指令
 #### 2.2.1 指定目标点指令
+
+***Note:*** 发布目标必须解除 *软急停控制指令*
+
 **Topic Name** : `/target_goal`
 
 **Msg Type** : `geometry_msgs/PoseStamped`
@@ -207,6 +232,9 @@ geometry_msgs/Pose pose
 ```
 
 #### 2.2.2 取消目标指令 
+
+*Note:* 取消当前目标必须发送*软急停控制指令*
+
 **Topic Name** : `/cancel_goal`
 
 **Msg Type** : `geometry_msgs/PoseStamped`
@@ -214,6 +242,7 @@ geometry_msgs/Pose pose
 **Msg Content** :  
 
 #### 2.2.3 相机云台控制
+
 **Topic Name** : `/camera/cam_movectr`
 
 **Msg Type** : `std_msgs/UInt8`
@@ -235,6 +264,7 @@ uint8 data
 
 
 #### 2.2.4 软急停控制指令
+
 **Topic Name** : `/emergency_state`
 
 **Msg Type** : `std_msgs/Bool`
