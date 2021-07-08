@@ -54,7 +54,7 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 ```
 **Note 1** :  `falult_code`对照表
 | 数据位 | 含义 |
----|---|---
+---|---
 | bit[15] - bit [12] | Reserved |
 | bit[11] | 电池欠压警告(0: 无警告 1: 警告) 报警电压22.5V |
 | bit[10] | 电机过流警告(0: 无警告 1: 警告) 报警电流15A |
@@ -70,7 +70,7 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 
 **Note 2**: 软/硬急停状态 
 | 急停 | 标志值 |
----|---|---
+---|---
 | 硬急停 | base_state == 0x02 |
 | 软急停 | control_mode  == 0x00 |
 
@@ -311,7 +311,7 @@ uint8 data
 ```
 
 |值 | 含义 |
----|---|---
+---|---
 | 0x01 | 相机云台右转单位弧度 |
 | 0x02 | 相机云台左转单位弧度 |
 | 0x03 | 相机云台向上转单位弧度 |
@@ -332,7 +332,7 @@ uint8 data
 uint8 data
 ```
 |值 | 含义 |
----|---|---
+---|---
 | False | 取消软急停 |
 | True  | 使能软急停 |
 
@@ -347,7 +347,7 @@ uint8 data
 uint8 data
 ```
 |值 | 含义 |
----|---|---
+---|---
 | False | 取消远程控制 |
 | True  | 开启远程控制 |
 
