@@ -242,7 +242,7 @@ autoware_msgs/DetectedObject[] objects
   string[] user_defined_info
 ```
 
-#### 2.2.9 远程控制时底盘状态
+#### 2.2.9 底盘远程控制状态
 
 **Topic Name** : `/chassis_state_RC`
 
@@ -256,7 +256,8 @@ string data
 
 | 值 | 含义 |
 ----|----
-| `Normal`  | 正常 |
+| `LControl`| 非远程控制 |
+| `RControl`  | 远程控制 |
 | `Blocked` | 被阻挡 |
 | `Underfrequency` | 控制频率低 |
 
