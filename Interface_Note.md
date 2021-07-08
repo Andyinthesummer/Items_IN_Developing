@@ -242,7 +242,7 @@ autoware_msgs/DetectedObject[] objects
   string[] user_defined_info
 ```
 
-#### 2.2.9 底盘远程控制状态
+#### 2.1.9 底盘远程控制状态
 
 **Topic Name** : `/chassis_state_RC`
 
@@ -338,7 +338,7 @@ uint8 data
 
 #### 2.2.5 远程控制模式切换
 
-**Topic Name** : `/remote_control`
+**Topic Name** : `/rc_mode`
 
 **Msg Type** : `std_msgs/Bool`
 
