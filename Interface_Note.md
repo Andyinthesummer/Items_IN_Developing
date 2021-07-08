@@ -196,15 +196,72 @@ enum STATE_TYPE {INITIAL_STATE, WAITING_STATE, FORWARD_STATE, STOPPING_STATE, EM
 
 **Msg Content** :   `GPS坐标` `GGA`
 
-```
+```shell
 std_msgs/Header header
-  uint32 seq
-  time stamp
-  string frame_id
 string sentence
 ```
 
+#### 2.1.8 障碍物聚类信息
+
+**Topic Name** : `/detection/lidar_detector/objects`
+
+**Msg Type** : `autoware_msgs/DetectedObjectArray`
+
+**Msg Content** :   `GPS坐标` `GGA`
+
+```shell
+std_msgs/Header header
+autoware_msgs/DetectedObject[] objects
+  std_msgs/Header header
+  uint32 id ## 障碍物编号
+  string label
+  float32 score
+  std_msgs/ColorRGBA color
+  bool valid
+  string space_frame
+  geometry_msgs/Pose pose ## 障碍物中心点位置
+  geometry_msgs/Vector3 dimensions
+  geometry_msgs/Vector3 variance
+  geometry_msgs/Twist velocity
+  geometry_msgs/Twist acceleration
+  sensor_msgs/PointCloud2 pointcloud ## 点云数据
+  geometry_msgs/PolygonStamped convex_hull ## 多边形顶点
+  autoware_msgs/LaneArray candidate_trajectories
+  bool pose_reliable
+  bool velocity_reliable
+  bool acceleration_reliable
+  string image_frame
+  int32 x
+  int32 y
+  int32 width
+  int32 height
+  float32 angle
+  sensor_msgs/Image roi_image
+  uint8 indicator_state
+  uint8 behavior_state
+  string[] user_defined_info
+```
+
+#### 2.2.9 远程控制时底盘状态
+
+**Topic Name** : `/chassis_state_RC`
+
+**Msg Type** : `std_msgs/String`
+
+**Msg Content** :  `STATE`
+
+```shell
+string data 
+```
+
+| 值 | 含义 |
+----|----
+| `Normal`  | 正常 |
+| `Blocked` | 被阻挡 |
+| `Underfrequency` | 控制频率低 |
+
 ### 2.2 控制指令
+
 #### 2.2.1 指定目标点指令
 
 ***Note:*** 发布目标必须解除 *软急停控制指令*
@@ -278,3 +335,30 @@ uint8 data
 | False | 取消软急停 |
 | True  | 使能软急停 |
 
+#### 2.2.5 远程控制模式切换
+
+**Topic Name** : `/remote_control`
+
+**Msg Type** : `std_msgs/Bool`
+
+**Msg Content** :   `开启远程控制标志`
+```
+uint8 data
+```
+|值 | 含义 |
+---|---|---
+| False | 取消远程控制 |
+| True  | 开启远程控制 |
+
+#### 2.2.6 远程控制速度指令
+
+**Topic Name** : `/twist_remote`
+
+**Msg Type** : `geometry_msgs/TwistStamped`
+
+**Msg Content** :   `开启远程控制标志`
+
+```
+std_msgs/Header header     ## 时间戳信息
+geometry_msgs/Twist twist   ## 角速度和线速度
+```
