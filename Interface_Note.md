@@ -84,7 +84,21 @@ scout_msgs/ScoutLightState rear_light_state  ## 后指示灯状态
 ```
 float32 data
 ```
-**Note 1**: 当`data`值小于`10`时，认为定位成功 
+**Note 1**: 当`data`值小于`15`时，认为定位成功 
+
+-------------
+**REVISED**
+
+**Topic Name** : `/localization_validity` 
+
+**Msg Type** : `std_msgs/Bool`
+
+**Msg Content** :   `定位是否有效`
+
+```
+bool data
+```
+-------------
 
 #### 2.1.3 巡检车当前位置
 
