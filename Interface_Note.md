@@ -275,6 +275,49 @@ string data
 | `Blocked` | 被阻挡 |
 | `Underfrequency` | 控制频率低 |
 
+#### 2.1.10 定位信息
+
+**Topic Name** : `localization_validity`
+
+**Msg Type** : `std_msgs/Bool`
+
+**Msg Content** : 
+
+```
+uint8 data
+```
+|值 | 含义 |
+---|---
+| False | 位置不可用 |
+| True  | 定位成功 |
+
+**Param** : `/pose_estimation/pose_source`
+
+**Value** : `lidar` `gps`
+
+*Note* : `0.5s`内未收到数据更新视为`invalid`
+
+#### 2.1.11 gps 状态
+
+**Topic Name** : `gps_state`
+
+**Msg Type** : `std_msgs/UInt8`
+
+**Msg Content** : `gps状态信息`
+
+```
+uint8 data
+```
+|值 | 含义 |
+---|---
+| 0 | invald |
+| 1 | autonomous |
+| 2/9  | differential |
+| 4 | fixed |
+| 5  | float |
+
+*Note* : `0.5s`内未收到数据更新视为`invalid`
+
 ### 2.2 控制指令
 
 #### 2.2.1 指定目标点指令
